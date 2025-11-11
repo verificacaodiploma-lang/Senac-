@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SENAC-SP — Sistema de Verificação de Diplomas</title>
+  <style>
+    :root {
+      --bg: #f7f8ff;
+      --card: #fff;
+      --accent: #003c7b;
+      --muted: #444;
+      --highlight: #ff6b00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: var(--bg);
+      margin: 0;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo img {
+      height: 48px;
+      width: auto;
+      border-radius: 4px;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .slogan {
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      padding: 40px 30px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .card h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 2px solid var(--accent);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--highlight);
+    }
+
+    .search-box button {
+      background: var(--highlight);
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .search-box button:hover {
+      background: #e85d00;
+    }
+
+    .result {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .result.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    footer {
+      background: var(--accent);
+      color: #fff;
+      text-align: center;
+      padding: 16px;
+      font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Senac_logo.svg" alt="Logo Senac-SP">
+      <div>
+        <div class="brand">SENAC-SP</div>
+        <div class="slogan">Sistema de Verificação de Diplomas</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1>Verifique a autenticidade do diploma</h1>
+      <div class="search-box">
+        <input type="text" id="codigo" placeholder="Digite o número de registro do diploma">
+        <button onclick="verificar()">Verificar</button>
+      </div>
+      <div class="result" id="resultado"></div>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 SENAC-SP — Todos os direitos reservados.
+  </footer>
+
+  <script>
+    function verificar() {
+      const codigo = document.getElementById('codigo').value.trim();
+      const resultado = document.getElementById('resultado');
+
+      if (codigo === "") {
+        resultado.innerHTML = "Por favor, insira o número de registro para verificar.";
+        resultado.classList.add("active");
+        return;
+      }
+
+      // Banco de dados de diplomas
+      const diplomas = {
+        "74677-75": {
+          nome: "Paulo Bernardino da Silva",
+          curso: "Técnico em Enfermagem do Trabalho",
+          instituicao: "Serviço Nacional de Aprendizagem Comercial — Senac São Paulo",
+          conclusao: "25/06/2025"
+        }
+      };
+
+      if (diplomas[codigo]) {
+        const d = diplomas[codigo];
+        resultado.innerHTML = `
+          <strong style="color:green;">Diploma válido ✅</strong><br>
+          <b>Nome:</b> ${d.nome}<br>
+          <b>Curso:</b> ${d.curso}<br>
+          <b>Instituição:</b> ${d.instituicao}<br>
+          <b>Data de Conclusão:</b> ${d.conclusao}<br>
+          <b>Número de Registro:</b> ${codigo}
+        `;
+      } else {
+        resultado.innerHTML = "<strong style='color:#b00'>Código não encontrado ❌</strong>";
+      }
+
+      resultado.classList.add("active");
+    }
+  </script>
+</body>
+
+</html>
